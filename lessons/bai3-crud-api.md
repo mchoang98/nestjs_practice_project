@@ -189,7 +189,7 @@ Sửa thành:
 
 ```ts id="n6gsud"
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Book } from './book.interface';
+import type { Book } from './book.interface';
 
 @Injectable()
 export class BooksService {
@@ -517,7 +517,7 @@ Sửa thành:
 ```ts id="l6l5by"
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { Book } from './book.interface';
+import type { Book } from './book.interface';
 
 @Controller('books')
 export class BooksController {
@@ -577,7 +577,37 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 
 ---
 
-## 9.2. `@Controller('books')`
+## 9.2. Import interface bằng `import type`
+
+```ts id="book-import-type"
+import type { Book } from './book.interface';
+```
+
+`Book` là interface, chỉ dùng để kiểm tra kiểu dữ liệu khi viết TypeScript.
+
+Khi project đang bật `isolatedModules` và `emitDecoratorMetadata`, các type xuất hiện trong method có decorator như `@Get()`, `@Post()`, `@Patch()`, `@Delete()` nên được import bằng `import type`.
+
+Nếu dùng:
+
+```ts id="book-import-wrong"
+import { Book } from './book.interface';
+```
+
+Bạn có thể gặp lỗi:
+
+```txt id="book-import-error"
+TS1272: A type referenced in a decorated signature must be imported with 'import type'
+```
+
+Vì vậy trong controller và service, ta nên dùng:
+
+```ts id="book-import-right"
+import type { Book } from './book.interface';
+```
+
+---
+
+## 9.3. `@Controller('books')`
 
 ```ts id="cslf07"
 @Controller('books')
@@ -593,7 +623,7 @@ Tất cả route trong controller này đều bắt đầu bằng:
 
 ---
 
-## 9.3. API GET /books
+## 9.4. API GET /books
 
 ```ts id="pejk0d"
 @Get()
@@ -633,7 +663,7 @@ Response:
 
 ---
 
-## 9.4. API GET /books/:id
+## 9.5. API GET /books/:id
 
 ```ts id="wzgesx"
 @Get(':id')
@@ -680,7 +710,7 @@ Response:
 
 ---
 
-## 9.5. API POST /books
+## 9.6. API POST /books
 
 ```ts id="jt3fyz"
 @Post()
@@ -722,7 +752,7 @@ Response:
 
 ---
 
-## 9.6. API PATCH /books/:id
+## 9.7. API PATCH /books/:id
 
 ```ts id="q072wn"
 @Patch(':id')
@@ -779,7 +809,7 @@ Ví dụ chỉ đổi title:
 
 ---
 
-## 9.7. API DELETE /books/:id
+## 9.8. API DELETE /books/:id
 
 ```ts id="zywqee"
 @Delete(':id')
